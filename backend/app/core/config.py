@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str
     
     # CORS
-    CORS_ORIGINS: str
+    CORS_ORIGINS: str = "http://localhost:5173"
     
     # Google Calendar (optional)
     GOOGLE_CLIENT_ID: str = ""

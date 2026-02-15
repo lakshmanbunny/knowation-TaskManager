@@ -48,7 +48,10 @@ async def run_async_migrations():
     from sqlalchemy.ext.asyncio import create_async_engine
     
     # Convert to async URL
-    database_url = settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
+    db_url = settings.DATABASE_URL
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+    database_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
     
     connectable = create_async_engine(
         database_url,
