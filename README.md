@@ -1,222 +1,106 @@
-# Task Manager - Full Stack Web Application
+# 🎯 Gamified Task Manager (Enterprise Edition)
 
-A modern task management application with gamification features built with React, FastAPI, and PostgreSQL.
+[![CI](https://github.com/lakshmanbunny/knowation-TaskManager/actions/workflows/ci.yml/badge.svg)](https://github.com/lakshmanbunny/knowation-TaskManager/actions/workflows/ci.yml)
+[![Docker Backend](https://img.shields.io/badge/Docker-Backend-blue?logo=docker)](https://hub.docker.com/r/lakshmanbunny/task-manager-backend)
+[![Docker Frontend](https://img.shields.io/badge/Docker-Frontend-blue?logo=docker)](https://hub.docker.com/r/lakshmanbunny/task-manager-frontend)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
+A state-of-the-art, full-stack task management ecosystem designed for productivity and engagement. Built with a high-performance **FastAPI** backend and an immersive **React** frontend, this project integrates advanced gamification mechanics, robust security, and a professional-grade DevOps pipeline.
 
-### Core Functionality
-- 🔐 User Authentication (Register, Login, JWT)
-- ✉️ Email Verification & Password Reset
-- 📝 Task CRUD Operations
-- 🔍 Search & Filter Tasks
-- 🏷️ Priority Levels (Low, Medium, High)
-- 📅 Due Dates & Categories/Tags
-- ✅ Mark Tasks as Completed
+---
 
-### Gamification System
-- 🎮 **XP/Points System**: Earn XP for completing tasks
-- 📊 **Level Progression**: Advance through levels
-- 🔥 **Daily Streaks**: Track consecutive task completions
-- 🏆 **Achievements**: Unlock badges for milestones
-- 📈 **Analytics Dashboard**: View your progress
+## 🏗️ System Architecture & Infrastructure
 
-### UI Features
-- 🌙 Dark Mode Toggle
-- 📱 Responsive Design (Mobile-Friendly)
-- 🎨 Material-UI Components
-- ✨ Smooth Animations
+This project follows a modern, distributed architecture designed for scalability and reliability.
 
-## Tech Stack
+### 🧩 Core Components
+- **Backend (API)**: High-concurrency ASGI server built with FastAPI, leveraging asynchronous SQLAlchemy and Pydantic validation.
+- **Frontend (UI)**: Responsive Single Page Application (SPA) built with React 18, Vite, and Material UI v5, optimized for zero-latency user experiences.
+- **Database**: Production-grade PostgreSQL (Neon Cloud) with Alembic migration management.
+- **Infrastructure**: Fully containerized with Docker and Docker Compose.
 
-### Frontend
-- **React 18** with **Vite**
-- **Material-UI (MUI) v5**
-- **React Router v6**
-- **Axios**
+### 🚀 CI/CD Pipeline
+We utilize a comprehensive **GitHub Actions** workflow that ensures code quality and automated delivery:
+1.  **Code Validation**: Parallel jobs for Python (Ruff) and JavaScript (ESLint).
+2.  **Smoke Testing**: Automated import and connectivity checks.
+3.  **Automated Build & Push**: On successful merge to `main`, Docker images are automatically built and pushed to **Docker Hub**.
+4.  **Continuous Deployment**: Automated triggering for cloud-native deployment.
 
-### Backend
-- **FastAPI**
-- **SQLAlchemy 2.0** (Async)
-- **PostgreSQL** (Neon)
-- **JWT Authentication**
-- **Mailtrap** (Email Testing)
+---
 
-## Setup Instructions
+## 🐳 Quick Execution (Docker)
 
-### Prerequisites
-- Node.js 18+
-- Python 3.10+
-- PostgreSQL (Neon account)
-- Mailtrap account
+The fastest way to run the entire stack locally is via Docker. We provide pre-built, industry-optimized images on Docker Hub.
 
-### Backend Setup
-
-1. Navigate to backend directory:
 ```bash
-cd backend
-```
-
-2. Create virtual environment:
-```bash
-python -m venv venv
-venv\Scripts\activate  # Windows
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Create `.env` file (see `.env.example`)
-
-5. Run database migrations:
-```bash
-alembic upgrade head
-```
-
-6. Start the server:
-```bash
-uvicorn app.main:app --reload
-```
-
-Backend will run on: http://localhost:8000
-
-### Frontend Setup
-
-1. Navigate to frontend directory:
-```bash
-cd frontend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Create `.env` file (see `.env.example`)
-
-4. Start development server:
-```bash
-npm run dev
-```
-
-Frontend will run on: http://localhost:5173
-
-### Docker Setup (Easiest)
-
-1. Make sure you have **Docker** and **Docker Compose** installed.
-2. Run the following command from the root directory:
-```bash
+# Pull and run the entire ecosystem
 docker-compose up --build
 ```
-The application will be available at:
-- Frontend: http://localhost:80
-- Backend: http://localhost:8000
-- API Docs: http://localhost:8000/docs
+
+**What this does:**
+- Provisions an **Nginx** reverse proxy for the frontend.
+- Boots the **FastAPI** backend in a production-ready container.
+- Establishes a secure bridge to your **PostgreSQL** instance.
 
 ---
 
-## Deployment
+## ☁️ Cloud Deployment (Render)
 
-### Docker Hub
-The application is automatically built and pushed to Docker Hub on every push to `main`:
-- Backend: `lakshmanbunny/task-manager-backend`
-- Frontend: `lakshmanbunny/task-manager-frontend`
+This repository is "Render-Ready" with a pre-configured `render.yaml` Blueprint.
 
-### Render (Cloud Deployment)
-This project includes a `render.yaml` Blueprint for one-click deployment.
+1.  **Connect Repo**: Link your GitHub repository to Render.
+2.  **Launch Blueprint**: Render will automatically detect the blueprint and provision:
+    - ✅ **Alembic-managed database**
+    - ✅ **Auto-scaling Backend Web Service**
+    - ✅ **Global CDN-backed Static Frontend**
+3.  **Configuration**: Use the provided environment variable templates for production secrets.
 
-1. Connect your GitHub repository to [Render](https://dashboard.render.com/).
-2. Select **Blueprint** and connect this repo.
-3. Render will automatically provision:
-   - **PostgreSQL Database** (Neon)
-   - **FastAPI Web Service**
-   - **Static Frontend Site**
+### 🔗 Public Registries
+- **Backend Image**: `lakshmanbunny/task-manager-backend:latest`
+- **Frontend Image**: `lakshmanbunny/task-manager-frontend:latest`
 
 ---
 
-## Environment Variables
+## 🛠️ Tech Stack & Compliance
 
-### Backend (.env)
-```env
-DATABASE_URL=postgresql://user:password@host/dbname
-SECRET_KEY=your-secret-key
-SMTP_HOST=sandbox.smtp.mailtrap.io
-SMTP_PORT=2525
-SMTP_USER=your-mailtrap-username
-SMTP_PASSWORD=your-mailtrap-password
-FROM_EMAIL=noreply@taskmanager.com
-FRONTEND_URL=http://localhost:5173
-```
+| Layer | Technology |
+| :--- | :--- |
+| **Language** | Python 3.12, JavaScript (ES6+) |
+| **Frameworks** | FastAPI, React 18, Vite |
+| **Styling** | Material-UI v5 (MUI) |
+| **Persistence** | PostgreSQL, SQLAlchemy (Async), Alembic |
+| **Authentication** | JWT (OAuth2 logic), Argon2 Password Hashing |
+| **Infrastructure** | Docker, Nginx, GitHub Actions |
+| **Monitoring** | Render Health Checks, Ruff/ESLint Linting |
 
-### Frontend (.env)
-```env
-VITE_API_URL=http://localhost:8000/api
-```
+---
 
-## API Documentation
-
-Once the backend is running, visit:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
-## Database Schema
-
-- **Users**: Authentication and profile information
-- **Tasks**: Task details with priority, category, due dates
-- **UserStats**: XP, levels, streaks tracking
-- **Achievements**: Badge definitions
-- **UserAchievements**: User's unlocked badges
-
-## Gamification Details
-
-### XP Rewards
-- Base: 10 XP per task
-- Priority Bonus: Low (+5), Medium (+10), High (+20)
-- Streak Bonus: +5 XP per streak day (max +50)
-
-### Level Formula
-`Level = 1 + floor(sqrt(total_xp / 100))`
-
-### Achievements
-- First Steps (1 task)
-- Getting Started (5 tasks)
-- Productive (25 tasks)
-- Task Master (100 tasks)
-- Week Warrior (7-day streak)
-- Marathon Runner (30-day streak)
-- And more...
-
-## Project Structure
+## 📁 Project Structure
 
 ```
-TASK-MANAGER/
-├── backend/          # FastAPI application
+.
+├── .github/workflows/    # CI/CD Pipeline definitions
+├── backend/              # FastAPI Logic
 │   ├── app/
-│   │   ├── models/   # Database models
-│   │   ├── routes/   # API endpoints
-│   │   ├── schemas/  # Pydantic schemas
-│   │   ├── services/ # Business logic
-│   │   └── core/     # Config, security, database
-│   └── alembic/      # Migrations
-│
-├── frontend/         # React application
-│   └── src/
-│       ├── components/  # UI components
-│       ├── pages/       # Page components
-│       ├── context/     # State management
-│       └── services/    # API calls
-│
-└── README.md
+│   │   ├── core/         # Config, Database, Security
+│   │   ├── models/       # SQL Models
+│   │   ├── routes/       # API Controllers
+│   │   └── services/     # Business Logic (Gamification, Google Sync)
+│   └── alembic/          # Version-controlled DB migrations
+├── frontend/             # React SPA
+│   ├── src/
+│   │   ├── components/   # Reusable Atomic UI
+│   │   ├── pages/        # Route-level views
+│   │   └── services/     # Axios API integrations
+├── docker-compose.yml    # Local orchestration
+└── render.yaml           # Infrastructure-as-Code (Blueprint)
 ```
 
-## Development
+---
 
-- Backend runs on port 8000
-- Frontend runs on port 5173
-- PostgreSQL hosted on Neon (cloud)
-- Emails tested with Mailtrap
+## ⚖️ License & Credits
 
-## License
+Distributed under the **MIT License**. Created by [Lakshman](https://github.com/lakshmanbunny).
 
-MIT
+---
+*Built with ❤️ for High Performance & Productive Gamification.*
