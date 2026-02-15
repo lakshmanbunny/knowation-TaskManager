@@ -1,14 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 from datetime import datetime, timedelta
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.database import get_db
-from app.core.security import hash_password, verify_password, create_access_token, generate_verification_token
-from app.models.user import User
+from app.core.security import create_access_token, generate_verification_token, hash_password, verify_password
 from app.models.gamification import UserStats
+from app.models.user import User
+from app.schemas.auth import PasswordResetConfirm, PasswordResetRequest, TokenResponse
 from app.schemas.user import UserCreate, UserLogin, UserResponse
-from app.schemas.auth import TokenResponse, PasswordResetRequest, PasswordResetConfirm
-from app.services.email import send_verification_email, send_password_reset_email
+from app.services.email import send_password_reset_email, send_verification_email
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 

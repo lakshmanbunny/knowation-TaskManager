@@ -1,7 +1,7 @@
-from pydantic import BaseModel, EmailStr, Field
-from typing import Optional
-from datetime import datetime
 import uuid
+from datetime import datetime
+
+from pydantic import BaseModel, EmailStr, Field
 
 
 # User Registration
@@ -31,5 +31,5 @@ class UserResponse(BaseModel):
 
 # Update User Profile
 class UserUpdate(BaseModel):
-    username: Optional[str] = Field(None, min_length=3, max_length=50)
-    email: Optional[EmailStr] = None
+    username: str | None = Field(None, min_length=3, max_length=50)
+    email: EmailStr | None = None

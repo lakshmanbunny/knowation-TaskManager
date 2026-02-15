@@ -1,8 +1,10 @@
 """Google Calendar OAuth Token Model"""
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, DateTime, ForeignKey, Text
+
+from sqlalchemy import Column, DateTime, ForeignKey, Text
 from sqlalchemy.dialects.postgresql import UUID
+
 from app.core.database import Base
 
 

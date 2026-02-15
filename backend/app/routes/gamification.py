@@ -1,12 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
+
+from fastapi import APIRouter, Depends
 from sqlalchemy import select
-from typing import List
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.database import get_db
 from app.middleware.auth import get_verified_user
+from app.models.gamification import Achievement, UserAchievement, UserStats
 from app.models.user import User
-from app.models.gamification import UserStats, Achievement, UserAchievement
-from app.schemas.gamification import UserStatsResponse, AchievementResponse
+from app.schemas.gamification import AchievementResponse, UserStatsResponse
 
 router = APIRouter(prefix="/gamification", tags=["Gamification"])
 
@@ -36,7 +37,7 @@ async def get_user_stats(
     return stats
 
 
-@router.get("/achievements", response_model=List[AchievementResponse])
+@router.get("/achievements", response_model=list[AchievementResponse])
 async def get_achievements(
     current_user: User = Depends(get_verified_user),
     db: AsyncSession = Depends(get_db)

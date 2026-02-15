@@ -1,11 +1,11 @@
 """Google Calendar Integration Service"""
 from datetime import datetime, timedelta
-from typing import List, Optional
+
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
-from app.core.config import settings
 
+from app.core.config import settings
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
@@ -59,11 +59,11 @@ def exchange_code(code: str) -> dict:
             "refresh_token": credentials.refresh_token,
             "token_expiry": credentials.expiry,
         }
-    except Exception as e:
+    except Exception:
         raise
 
 
-def get_credentials(access_token: str, refresh_token: str, token_expiry: Optional[datetime] = None) -> Credentials:
+def get_credentials(access_token: str, refresh_token: str, token_expiry: datetime | None = None) -> Credentials:
     """Build Credentials object from stored tokens"""
     return Credentials(
         token=access_token,
@@ -152,7 +152,7 @@ def sync_tasks_to_calendar(tasks: list, credentials: Credentials) -> dict:
                         body=event_body,
                     ).execute()
                     created += 1
-                except Exception as e:
+                except Exception:
 
                     # If event not found, fallback to creating new one
                     event = service.events().insert(

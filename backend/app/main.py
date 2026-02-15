@@ -1,11 +1,12 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
+
 from app.core.config import settings
-from app.core.database import engine, Base
-from app.routes import auth, tasks, gamification, calendar
+from app.core.database import AsyncSessionLocal, Base, engine
+from app.routes import auth, calendar, gamification, tasks
 from app.services.gamification import initialize_achievements
-from app.core.database import AsyncSessionLocal
 
 
 @asynccontextmanager

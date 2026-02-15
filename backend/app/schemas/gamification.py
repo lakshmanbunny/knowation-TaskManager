@@ -1,7 +1,7 @@
-from pydantic import BaseModel
-from datetime import datetime, date
-from typing import Optional
 import uuid
+from datetime import date, datetime
+
+from pydantic import BaseModel
 
 
 # User Stats Response
@@ -13,7 +13,7 @@ class UserStatsResponse(BaseModel):
     tasks_completed: int
     current_streak: int
     longest_streak: int
-    last_completion_date: Optional[date]
+    last_completion_date: date | None
     
     class Config:
         from_attributes = True
@@ -23,13 +23,13 @@ class UserStatsResponse(BaseModel):
 class AchievementResponse(BaseModel):
     id: uuid.UUID
     name: str
-    description: Optional[str]
+    description: str | None
     badge_icon: str
     requirement_type: str
     requirement_value: int
     xp_reward: int
     unlocked: bool = False
-    unlocked_at: Optional[datetime] = None
+    unlocked_at: datetime | None = None
     
     class Config:
         from_attributes = True

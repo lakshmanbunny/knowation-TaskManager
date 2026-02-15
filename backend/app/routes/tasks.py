@@ -1,14 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, or_, and_, func
-from typing import Optional, List
 from datetime import datetime
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import and_, or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.database import get_db
 from app.middleware.auth import get_verified_user
+from app.models.task import PriorityEnum, StatusEnum, Task
 from app.models.user import User
-from app.models.task import Task, PriorityEnum, StatusEnum
-from app.schemas.task import TaskCreate, TaskUpdate, TaskResponse
 from app.schemas.gamification import XPAwardResponse
+from app.schemas.task import TaskCreate, TaskResponse, TaskUpdate
 from app.services.gamification import award_xp
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
@@ -43,12 +44,12 @@ async def create_task(
     return task
 
 
-@router.get("", response_model=List[TaskResponse])
+@router.get("", response_model=list[TaskResponse])
 async def get_tasks(
-    status_filter: Optional[StatusEnum] = Query(None, alias="status"),
-    priority_filter: Optional[PriorityEnum] = Query(None, alias="priority"),
-    category_filter: Optional[str] = Query(None, alias="category"),
-    search: Optional[str] = Query(None),
+    status_filter: StatusEnum | None = Query(None, alias="status"),
+    priority_filter: PriorityEnum | None = Query(None, alias="priority"),
+    category_filter: str | None = Query(None, alias="category"),
+    search: str | None = Query(None),
     current_user: User = Depends(get_verified_user),
     db: AsyncSession = Depends(get_db)
 ):

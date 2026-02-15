@@ -1,0 +1,17 @@
+# Ruff linter configuration
+line-length = 120
+target-version = "py312"
+exclude = ["alembic/", "migrations/", "migrate_column.py"]
+
+[lint]
+# Only catch real bugs, not style nitpicks
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort (import sorting)
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "UP042",  # enum class inherits from both str and enum.Enum (intentional)
+]

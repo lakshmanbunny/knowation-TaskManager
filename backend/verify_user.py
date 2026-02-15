@@ -1,7 +1,10 @@
 import asyncio
+
+from sqlalchemy import select
+
 from app.core.database import AsyncSessionLocal
 from app.models.user import User
-from sqlalchemy import select, update
+
 
 async def verify_user():
     async with AsyncSessionLocal() as db:

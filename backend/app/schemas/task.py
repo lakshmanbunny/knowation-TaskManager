@@ -1,29 +1,30 @@
-from pydantic import BaseModel, Field
-from typing import Optional, List
-from datetime import datetime
 import uuid
+from datetime import datetime
+
+from pydantic import BaseModel, Field
+
 from app.models.task import PriorityEnum, StatusEnum
 
 
 # Task Creation
 class TaskCreate(BaseModel):
     title: str = Field(..., min_length=1, max_length=200)
-    description: Optional[str] = None
+    description: str | None = None
     priority: PriorityEnum = PriorityEnum.MEDIUM
-    category: Optional[str] = Field(None, max_length=50)
-    tags: Optional[List[str]] = []
-    due_date: Optional[datetime] = None
+    category: str | None = Field(None, max_length=50)
+    tags: list[str] | None = []
+    due_date: datetime | None = None
 
 
 # Task Update
 class TaskUpdate(BaseModel):
-    title: Optional[str] = Field(None, min_length=1, max_length=200)
-    description: Optional[str] = None
-    priority: Optional[PriorityEnum] = None
-    category: Optional[str] = Field(None, max_length=50)
-    tags: Optional[List[str]] = None
-    due_date: Optional[datetime] = None
-    status: Optional[StatusEnum] = None
+    title: str | None = Field(None, min_length=1, max_length=200)
+    description: str | None = None
+    priority: PriorityEnum | None = None
+    category: str | None = Field(None, max_length=50)
+    tags: list[str] | None = None
+    due_date: datetime | None = None
+    status: StatusEnum | None = None
 
 
 # Task Response
@@ -31,13 +32,13 @@ class TaskResponse(BaseModel):
     id: uuid.UUID
     user_id: uuid.UUID
     title: str
-    description: Optional[str]
+    description: str | None
     priority: PriorityEnum
     status: StatusEnum
-    category: Optional[str]
-    tags: Optional[List[str]]
-    due_date: Optional[datetime]
-    completed_at: Optional[datetime]
+    category: str | None
+    tags: list[str] | None
+    due_date: datetime | None
+    completed_at: datetime | None
     created_at: datetime
     updated_at: datetime
     

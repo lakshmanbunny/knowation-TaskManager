@@ -1,20 +1,20 @@
 """Google Calendar Integration Routes"""
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from fastapi.responses import RedirectResponse
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, and_
-from typing import Optional, List
-from pydantic import BaseModel
 
-from app.core.database import get_db
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi.responses import RedirectResponse
+from pydantic import BaseModel
+from sqlalchemy import and_, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.config import settings
+from app.core.database import get_db
 from app.middleware.auth import get_verified_user
-from app.models.user import User
-from app.models.task import Task
 from app.models.google_token import GoogleToken
+from app.models.task import Task
+from app.models.user import User
 from app.services.google_calendar import (
-    get_auth_url,
     exchange_code,
+    get_auth_url,
     get_credentials,
     sync_tasks_to_calendar,
 )
@@ -25,7 +25,7 @@ router = APIRouter(prefix="/calendar", tags=["Calendar"])
 # --- Request/Response Schemas ---
 
 class SyncRequest(BaseModel):
-    task_ids: Optional[List[str]] = None  # If None, sync all tasks with due dates
+    task_ids: list[str] | None = None  # If None, sync all tasks with due dates
 
 
 class SyncResponse(BaseModel):

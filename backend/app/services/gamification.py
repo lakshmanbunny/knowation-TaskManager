@@ -1,11 +1,11 @@
 import math
-from datetime import date, datetime
-from typing import List, Optional
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
-from app.models.gamification import UserStats, Achievement, UserAchievement
-from app.models.task import PriorityEnum
+from datetime import date
 
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models.gamification import Achievement, UserAchievement, UserStats
+from app.models.task import PriorityEnum
 
 # XP Calculation Constants
 BASE_XP = 10
@@ -141,7 +141,7 @@ async def check_achievements(
     user_id: str,
     stats: UserStats,
     db: AsyncSession
-) -> List[str]:
+) -> list[str]:
     """
     Check and unlock achievements for user
     
