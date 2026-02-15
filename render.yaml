@@ -16,7 +16,7 @@ services:
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "10080"
       - key: FRONTEND_URL
-        sync: false # User will need to update this after frontend is live
+        sync: false # User will update this after frontend is live
       - key: SMTP_HOST
         value: smtp.gmail.com
       - key: SMTP_PORT
@@ -34,11 +34,11 @@ services:
       - key: GOOGLE_REDIRECT_URI
         sync: false
 
-  - type: web
-    name: task-manager-frontend
+staticSites:
+  - name: task-manager-frontend
     env: static
     buildCommand: npm install && npm run build
-    staticPublishDir: dist
+    publishDir: dist
     envVars:
       - key: VITE_API_URL
         sync: false # User will update this after backend is live
