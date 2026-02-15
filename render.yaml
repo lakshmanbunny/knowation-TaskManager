@@ -16,7 +16,23 @@ services:
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "10080"
       - key: FRONTEND_URL
-        value: https://task-manager-frontend.onrender.com
+        sync: false # User will need to update this after frontend is live
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: FROM_EMAIL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        sync: false
 
   - type: static
     name: task-manager-frontend
@@ -25,7 +41,7 @@ services:
     staticPublishDir: dist
     envVars:
       - key: VITE_API_URL
-        value: https://task-manager-backend.onrender.com/api
+        sync: false # User will update this after backend is live
 
 databases:
   - name: task-manager-db
