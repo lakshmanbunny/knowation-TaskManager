@@ -38,7 +38,6 @@ services:
 
   # Frontend Static Site
   - type: web
-    plan: free
     name: task-manager-frontend
     env: static
     buildCommand: npm install && npm run build
