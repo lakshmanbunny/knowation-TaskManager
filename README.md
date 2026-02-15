@@ -102,6 +102,39 @@ npm run dev
 
 Frontend will run on: http://localhost:5173
 
+### Docker Setup (Easiest)
+
+1. Make sure you have **Docker** and **Docker Compose** installed.
+2. Run the following command from the root directory:
+```bash
+docker-compose up --build
+```
+The application will be available at:
+- Frontend: http://localhost:80
+- Backend: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+
+---
+
+## Deployment
+
+### Docker Hub
+The application is automatically built and pushed to Docker Hub on every push to `main`:
+- Backend: `lakshmanbunny/task-manager-backend`
+- Frontend: `lakshmanbunny/task-manager-frontend`
+
+### Render (Cloud Deployment)
+This project includes a `render.yaml` Blueprint for one-click deployment.
+
+1. Connect your GitHub repository to [Render](https://dashboard.render.com/).
+2. Select **Blueprint** and connect this repo.
+3. Render will automatically provision:
+   - **PostgreSQL Database** (Neon)
+   - **FastAPI Web Service**
+   - **Static Frontend Site**
+
+---
+
 ## Environment Variables
 
 ### Backend (.env)
