@@ -93,6 +93,15 @@ docker-compose up --build
 └── docker-compose.yml    # Local Orchestration
 ```
 
+## 🏁 Production Launch Checklist
+
+To allow **any** Google account to connect, you must update your Google Cloud Console settings:
+
+1.  Go to **[Google Cloud Console](https://console.cloud.google.com/)** -> **APIs & Services** -> **OAuth Consent Screen**.
+2.  Find **Publishing Status** and click **"PUBLISH APP"**.
+    *   *Note: Currently, your app is in "Testing" mode, which limits access to specific "Test Users".*
+3.  Confirm the change. Now, any Google account will be able to sync their calendar with TaskMaster!
+
 ---
 
 *Built with ❤️ by Lakshman - Final Submission Edition.*
