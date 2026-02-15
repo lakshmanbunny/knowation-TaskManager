@@ -234,6 +234,23 @@ function Navigation() {
                                 {user?.email}
                             </Typography>
                         </MenuItem>
+
+                        {/* Mobile Navigation Links in Menu */}
+                        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                            <MenuItem onClick={() => { navigate('/dashboard'); handleClose(); }}>
+                                <Dashboard fontSize="small" sx={{ mr: 1 }} />
+                                Dashboard
+                            </MenuItem>
+                            <MenuItem onClick={() => { navigate('/tasks'); handleClose(); }}>
+                                <Assignment fontSize="small" sx={{ mr: 1 }} />
+                                Tasks
+                            </MenuItem>
+                            <MenuItem onClick={() => { navigate('/calendar'); handleClose(); }}>
+                                <CalendarMonth fontSize="small" sx={{ mr: 1 }} />
+                                Calendar
+                            </MenuItem>
+                        </Box>
+
                         <MenuItem onClick={handleLogout}>
                             <Logout fontSize="small" sx={{ mr: 1 }} />
                             Logout

@@ -116,6 +116,17 @@ async def login(credentials: UserLogin, db: AsyncSession = Depends(get_db)):
     access_token = create_access_token(data={"sub": str(user.id)})
     
     return TokenResponse(access_token=access_token, token_type="bearer")
+    
+
+@router.get("/me", response_model=UserResponse)
+async def get_me(user: User = Depends(get_verified_user)):
+    """
+    Get current user profile
+    
+    - Requires authenticated user
+    - Returns user details
+    """
+    return user
 
 
 @router.post("/forgot-password")
