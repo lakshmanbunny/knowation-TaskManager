@@ -1,9 +1,10 @@
-import { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { createContext, useContext, useState, useMemo } from 'react';
 import { ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 const ThemeContext = createContext(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useThemeMode = () => {
     const context = useContext(ThemeContext);
     if (!context) {
@@ -13,15 +14,9 @@ export const useThemeMode = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-    const [mode, setMode] = useState('light');
-
-    useEffect(() => {
-        // Load theme preference from localStorage
-        const savedMode = localStorage.getItem('themeMode');
-        if (savedMode) {
-            setMode(savedMode);
-        }
-    }, []);
+    const [mode, setMode] = useState(() => {
+        return localStorage.getItem('themeMode') || 'light';
+    });
 
     const toggleTheme = () => {
         setMode((prevMode) => {

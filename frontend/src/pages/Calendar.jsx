@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import {
     Container,
     Box,
@@ -27,12 +27,10 @@ import {
     Circle,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { useAuth } from '../context/AuthContext';
 import { tasksAPI, calendarAPI } from '../services/api';
 
 function Calendar() {
     const theme = useTheme();
-    const { user } = useAuth();
     const isDark = theme.palette.mode === 'dark';
 
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -44,16 +42,50 @@ function Calendar() {
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
     const hasConnected = useRef(false);
 
-    const showMessage = (message, severity = 'success') => {
+    const showMessage = useCallback((message, severity = 'success') => {
         setSnackbar({ open: true, message, severity });
-    };
+    }, []);
 
-    const handleCloseSnackbar = () => {
+    const handleCloseSnackbar = useCallback(() => {
         setSnackbar(prev => ({ ...prev, open: false }));
-    };
+    }, []);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = useMemo(() => {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+        return d;
+    }, []);
+
+    const fetchTasks = useCallback(async () => {
+        try {
+            const res = await tasksAPI.getAll();
+            setTasks(res.data);
+        } catch (err) {
+            console.error('Failed to fetch tasks:', err);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const checkGoogleStatus = useCallback(async () => {
+        try {
+            const res = await calendarAPI.getStatus();
+            setGoogleConnected(res.data.connected);
+        } catch (err) {
+            console.error('Failed to check Google status:', err);
+        }
+    }, []);
+
+    const connectGoogle = useCallback(async (code) => {
+        try {
+            await calendarAPI.connect(code);
+            setGoogleConnected(true);
+            showMessage('Google Calendar connected successfully!', 'success');
+        } catch (err) {
+            console.error('Failed to connect Google:', err);
+            showMessage('Failed to connect Google Calendar. Please try again.', 'error');
+        }
+    }, [showMessage]);
 
     // Fetch tasks on mount
     useEffect(() => {
@@ -68,39 +100,7 @@ function Calendar() {
             connectGoogle(code);
             window.history.replaceState({}, '', '/calendar');
         }
-    }, [googleConnected]);
-
-    const fetchTasks = async () => {
-        try {
-            setLoading(true);
-            const res = await tasksAPI.getAll();
-            setTasks(res.data);
-        } catch (err) {
-            console.error('Failed to fetch tasks:', err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const checkGoogleStatus = async () => {
-        try {
-            const res = await calendarAPI.getStatus();
-            setGoogleConnected(res.data.connected);
-        } catch (err) {
-            console.error('Failed to check Google status:', err);
-        }
-    };
-
-    const connectGoogle = async (code) => {
-        try {
-            await calendarAPI.connect(code);
-            setGoogleConnected(true);
-            showMessage('Google Calendar connected successfully!', 'success');
-        } catch (err) {
-            console.error('Failed to connect Google:', err);
-            showMessage('Failed to connect Google Calendar. Please try again.', 'error');
-        }
-    };
+    }, [fetchTasks, checkGoogleStatus, connectGoogle]);
 
     const handleSyncToGoogle = async () => {
         if (!googleConnected) {
@@ -158,9 +158,9 @@ function Calendar() {
         return map;
     }, [tasks]);
 
-    const getDateStr = (y, m, d) => {
+    const getDateStr = useCallback((y, m, d) => {
         return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-    };
+    }, []);
 
     const isToday = (y, m, d) => {
         return d === today.getDate() && m === today.getMonth() && y === today.getFullYear();
@@ -200,7 +200,7 @@ function Calendar() {
             .filter(t => t.due_date && t.due_date.split('T')[0] >= todayStr && t.status !== 'completed')
             .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
             .slice(0, 5);
-    }, [tasks]);
+    }, [tasks, today, getDateStr]);
 
     const getPriorityColor = (priority) => {
         switch (priority) {

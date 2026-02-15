@@ -11,15 +11,15 @@ const VerifyEmail = () => {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        const token = searchParams.get('token');
-
-        if (!token) {
-            setStatus('error');
-            setMessage('Invalid verification link');
-            return;
-        }
-
         const verifyEmail = async () => {
+            const token = searchParams.get('token');
+
+            if (!token) {
+                setStatus('error');
+                setMessage('Invalid verification link');
+                return;
+            }
+
             try {
                 await authAPI.verifyEmail(token);
                 setStatus('success');

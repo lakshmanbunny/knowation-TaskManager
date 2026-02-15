@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
     Container,
     Box,
@@ -33,15 +33,10 @@ import {
     CalendarToday,
     Check,
 } from '@mui/icons-material';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import { tasksAPI } from '../services/api';
 
 const Tasks = () => {
-    const { user } = useAuth();
-    const navigate = useNavigate();
     const [tasks, setTasks] = useState([]);
-    const [filteredTasks, setFilteredTasks] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
     const [openDialog, setOpenDialog] = useState(false);
@@ -55,24 +50,16 @@ const Tasks = () => {
     });
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
-    useEffect(() => {
-        loadTasks();
-    }, []);
-
-    useEffect(() => {
-        filterTasks();
-    }, [tasks, searchQuery, filterStatus]);
-
-    const loadTasks = async () => {
+    const loadTasks = useCallback(async () => {
         try {
             const response = await tasksAPI.getAll({});
             setTasks(response.data);
-        } catch (error) {
-            console.error('Error loading tasks:', error);
+        } catch (_error) {
+            console.error('Error loading tasks:', _error);
         }
-    };
+    }, []);
 
-    const filterTasks = () => {
+    const filteredTasks = useMemo(() => {
         let filtered = [...tasks];
 
         // Filter by search query
@@ -92,8 +79,13 @@ const Tasks = () => {
             filtered = filtered.filter(task => task.priority === 'high');
         }
 
-        setFilteredTasks(filtered);
-    };
+        return filtered;
+    }, [tasks, searchQuery, filterStatus]);
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        loadTasks();
+    }, [loadTasks]);
 
     const handleOpenDialog = (task = null) => {
         if (task) {
@@ -134,7 +126,7 @@ const Tasks = () => {
             }
             handleCloseDialog();
             loadTasks();
-        } catch (error) {
+        } catch {
             setSnackbar({ open: true, message: 'Error saving task', severity: 'error' });
         }
     };
@@ -153,7 +145,7 @@ const Tasks = () => {
                 setSnackbar({ open: true, message: 'Task marked as pending', severity: 'info' });
             }
             loadTasks();
-        } catch (error) {
+        } catch {
             setSnackbar({ open: true, message: 'Error updating task', severity: 'error' });
         }
     };
@@ -163,7 +155,7 @@ const Tasks = () => {
             await tasksAPI.delete(taskId);
             setSnackbar({ open: true, message: 'Task deleted', severity: 'info' });
             loadTasks();
-        } catch (error) {
+        } catch {
             setSnackbar({ open: true, message: 'Error deleting task', severity: 'error' });
         }
     };
