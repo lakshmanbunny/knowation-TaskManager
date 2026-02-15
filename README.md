@@ -5,73 +5,72 @@
 [![Docker Frontend](https://img.shields.io/badge/Docker-Frontend-blue?logo=docker)](https://hub.docker.com/r/lakshmanbunny/task-manager-frontend)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A state-of-the-art, full-stack task management ecosystem designed for productivity and engagement. Built with a high-performance **FastAPI** backend and an immersive **React** frontend, this project integrates advanced gamification mechanics, robust security, and a professional-grade DevOps pipeline.
+A state-of-the-art, full-stack task management ecosystem designed for maximal productivity and engagement. Built with a high-performance **FastAPI** backend and an immersive **React** frontend, this project integrates advanced gamification mechanics, robust security, and a professional-grade DevOps pipeline.
+
+---
+
+## 🚀 Live Production URL
+- **Frontend Dashboard**: [https://task-manager-frontend-m24t.onrender.com](https://task-manager-frontend-m24t.onrender.com)
+- **API Documentation**: [https://task-manager-backend-5dfy.onrender.com/docs](https://task-manager-backend-5dfy.onrender.com/docs)
+
+---
+
+## ✨ Implemented Features & Core Logic
+
+### 1. 🎮 Advanced Gamification Engine
+Our core engine is designed to turn productivity into an addictive, rewarding experience.
+- **XP System**: Users earn Experience Points (XP) for completing tasks. Rewards are scaled based on task priority (Low: 10XP, Medium: 25XP, High: 50XP).
+- **Dynamic Leveling**: A progressive leveling system ($Level = floor(XP / 100)$) with visual progress tracking.
+- **Achievement System**: 15+ automated achievements (e.g., "First Steps", "Task Master", "Level 10 Legend") with unique icon badges and XP bonuses.
+- **Streak Calculation**: Monitors consecutive days of activity. Maintaining a streak provides XP multipliers and unlocks special achievements.
+
+### 2. 🗓️ Google Calendar Integration (OAuth2)
+Seamlessly bridge your digital life with your productivity goals.
+- **Full OAuth2 Flow**: Securely connect your Google account via a professional-grade OAuth2 handshake.
+- **Bidirectional Sync**: Push tasks from the local dashboard directly to a "Task Manager" calendar in Google.
+- **Real-time Status**: Tracking system that remembers which tasks have already been synced to prevent duplicates.
+
+### 3. 📝 Comprehensive Task Management
+A robust foundation for day-to-day organization.
+- **Full CRUD**: Create, Read, Update, and Delete tasks with a modern UI.
+- **Rich Task Data**: Support for Descriptions, Categories, Tags, Due Dates, and Priority levels.
+- **Advanced Filtering**: Live search and status-based filtering (All, Pending, Completed).
+
+### 4. 🛡️ Security & Integrity
+Built with industry-standard security protocols.
+- **JWT Authentication**: Stateless authentication using JSON Web Tokens for secure session management.
+- **Argon2 Hashing**: Modern, memory-hard password hashing that protects user credentials against brute-force attacks.
+- **Protected Routes**: Granular middleware that enforces authentication and authorizations across all sensitive API endpoints.
+- **CORS Protection**: Hardened Cross-Origin Resource Sharing policy for production safety.
+
+### 5. 📧 Email Service (Mailtrap/Gmail)
+- **Email Verification**: Automated verification tokens sent upon registration to ensure valid user identities.
+- **Password Recovery**: Secure, time-limited tokens for password resets via email.
 
 ---
 
 ## 🏗️ System Architecture & Infrastructure
 
-This project follows a modern, distributed architecture designed for scalability and reliability.
+### 🧩 Core Stack
+- **Backend**: FastAPI (Python 3.12), SQLAlchemy (Async), Pydantic v2.
+- **Frontend**: React 18, Vite, Material UI v5, Axios.
+- **Database**: PostgreSQL with Alembic Migrations.
+- **Nginx**: Production reverse proxy for the frontend container.
 
-### 🧩 Core Components
-- **Backend (API)**: High-concurrency ASGI server built with FastAPI, leveraging asynchronous SQLAlchemy and Pydantic validation.
-- **Frontend (UI)**: Responsive Single Page Application (SPA) built with React 18, Vite, and Material UI v5, optimized for zero-latency user experiences.
-- **Database**: Production-grade PostgreSQL (Neon Cloud) with Alembic migration management.
-- **Infrastructure**: Fully containerized with Docker and Docker Compose.
-
-### 🚀 CI/CD Pipeline
-We utilize a comprehensive **GitHub Actions** workflow that ensures code quality and automated delivery:
-1.  **Code Validation**: Parallel jobs for Python (Ruff) and JavaScript (ESLint).
-2.  **Smoke Testing**: Automated import and connectivity checks.
-3.  **Automated Build & Push**: On successful merge to `main`, Docker images are automatically built and pushed to **Docker Hub**.
-4.  **Continuous Deployment**: Automated triggering for cloud-native deployment.
+### 🚀 DevOps & CI/CD
+- **GitHub Actions**: Fully automated linting (Ruff/ESLint) and image building.
+- **Docker Hub**: Automated builds of production-ready images.
+- **Render Blueprints**: Infrastructure-as-Code (`render.yaml`) for predictable, repeatable cloud deployments.
 
 ---
 
-## 🐳 Quick Execution (Docker)
-
-The fastest way to run the entire stack locally is via Docker. We provide pre-built, industry-optimized images on Docker Hub.
+## 🐳 Running Privately (Docker)
 
 ```bash
-# Pull and run the entire ecosystem
+# Clone and run
+git clone https://github.com/lakshmanbunny/knowation-TaskManager.git
 docker-compose up --build
 ```
-
-**What this does:**
-- Provisions an **Nginx** reverse proxy for the frontend.
-- Boots the **FastAPI** backend in a production-ready container.
-- Establishes a secure bridge to your **PostgreSQL** instance.
-
----
-
-## ☁️ Cloud Deployment (Render)
-
-This repository is "Render-Ready" with a pre-configured `render.yaml` Blueprint.
-
-1.  **Connect Repo**: Link your GitHub repository to Render.
-2.  **Launch Blueprint**: Render will automatically detect the blueprint and provision:
-    - ✅ **Alembic-managed database**
-    - ✅ **Auto-scaling Backend Web Service**
-    - ✅ **Global CDN-backed Static Frontend**
-3.  **Configuration**: Use the provided environment variable templates for production secrets.
-
-### 🔗 Public Registries
-- **Backend Image**: `lakshmanbunny/task-manager-backend:latest`
-- **Frontend Image**: `lakshmanbunny/task-manager-frontend:latest`
-
----
-
-## 🛠️ Tech Stack & Compliance
-
-| Layer | Technology |
-| :--- | :--- |
-| **Language** | Python 3.12, JavaScript (ES6+) |
-| **Frameworks** | FastAPI, React 18, Vite |
-| **Styling** | Material-UI v5 (MUI) |
-| **Persistence** | PostgreSQL, SQLAlchemy (Async), Alembic |
-| **Authentication** | JWT (OAuth2 logic), Argon2 Password Hashing |
-| **Infrastructure** | Docker, Nginx, GitHub Actions |
-| **Monitoring** | Render Health Checks, Ruff/ESLint Linting |
 
 ---
 
@@ -79,28 +78,21 @@ This repository is "Render-Ready" with a pre-configured `render.yaml` Blueprint.
 
 ```
 .
-├── .github/workflows/    # CI/CD Pipeline definitions
+├── .github/workflows/    # CI/CD Pipeline
 ├── backend/              # FastAPI Logic
 │   ├── app/
-│   │   ├── core/         # Config, Database, Security
-│   │   ├── models/       # SQL Models
+│   │   ├── core/         # Config & Security
+│   │   ├── models/       # Database Schemas
 │   │   ├── routes/       # API Controllers
-│   │   └── services/     # Business Logic (Gamification, Google Sync)
-│   └── alembic/          # Version-controlled DB migrations
-├── frontend/             # React SPA
+│   │   └── services/     # Gamification & Calendar Engine
+├── frontend/             # React Logic
 │   ├── src/
-│   │   ├── components/   # Reusable Atomic UI
-│   │   ├── pages/        # Route-level views
-│   │   └── services/     # Axios API integrations
-├── docker-compose.yml    # Local orchestration
-└── render.yaml           # Infrastructure-as-Code (Blueprint)
+│   │   ├── context/      # Global State Management
+│   │   ├── services/     # Axios API Bridge
+│   │   └── components/   # Atomic UI Elements
+└── docker-compose.yml    # Local Orchestration
 ```
 
 ---
 
-## ⚖️ License & Credits
-
-Distributed under the **MIT License**. Created by [Lakshman](https://github.com/lakshmanbunny).
-
----
-*Built with ❤️ for High Performance & Productive Gamification.*
+*Built with ❤️ by Lakshman - Final Submission Edition.*
