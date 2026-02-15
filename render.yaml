@@ -1,4 +1,5 @@
 services:
+  # Backend API
   - type: web
     name: task-manager-backend
     env: python
@@ -16,7 +17,7 @@ services:
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "10080"
       - key: FRONTEND_URL
-        sync: false # User will update this after frontend is live
+        sync: false
       - key: SMTP_HOST
         value: smtp.gmail.com
       - key: SMTP_PORT
@@ -34,14 +35,15 @@ services:
       - key: GOOGLE_REDIRECT_URI
         sync: false
 
-staticSites:
-  - name: task-manager-frontend
+  # Frontend Static Site
+  - type: web
+    name: task-manager-frontend
     env: static
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        sync: false # User will update this after backend is live
+        sync: false
 
 databases:
   - name: task-manager-db
