@@ -1,0 +1,44 @@
+from pydantic import BaseModel
+from datetime import datetime, date
+from typing import Optional
+import uuid
+
+
+# User Stats Response
+class UserStatsResponse(BaseModel):
+    id: uuid.UUID
+    user_id: uuid.UUID
+    total_xp: int
+    level: int
+    tasks_completed: int
+    current_streak: int
+    longest_streak: int
+    last_completion_date: Optional[date]
+    
+    class Config:
+        from_attributes = True
+
+
+# Achievement Response
+class AchievementResponse(BaseModel):
+    id: uuid.UUID
+    name: str
+    description: Optional[str]
+    badge_icon: str
+    requirement_type: str
+    requirement_value: int
+    xp_reward: int
+    unlocked: bool = False
+    unlocked_at: Optional[datetime] = None
+    
+    class Config:
+        from_attributes = True
+
+
+# XP Award Response
+class XPAwardResponse(BaseModel):
+    xp_earned: int
+    total_xp: int
+    level: int
+    level_up: bool
+    new_achievements: list[str] = []
