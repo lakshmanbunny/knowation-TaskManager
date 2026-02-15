@@ -37,6 +37,7 @@ def get_auth_url() -> str:
         raise ValueError("Google Calendar credentials are not configured in .env file")
         
     flow = get_oauth_flow()
+    print(f"DEBUG: Using Google Redirect URI: {settings.GOOGLE_REDIRECT_URI}")
     auth_url, _ = flow.authorization_url(
         access_type="offline",
         include_granted_scopes="true",
